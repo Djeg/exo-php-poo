@@ -4,7 +4,7 @@ Ce repository contient des exo pour php Orientée Objet
 
 ## Installation
 
-1. Cloner le repository ou bien [télécharger le](https://github.com/Djeg/exo-php-poo/archive/refs/heads/master.zip)
+1. Cloner le repository ou bien [télécharger le](https://github.com/Djeg/exo-php-poo/archive/refs/heads/session/10-01-22.14-01-22.zip)
 
 2. Ouvrir le projet dans vscode (ou bien ouvrir un terminal depuis
    la racine du projet)
