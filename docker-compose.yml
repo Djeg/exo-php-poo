@@ -12,7 +12,7 @@ services:
     image: phpmyadmin
     restart: always
     ports:
-      - 8888:80
+      - 8989:80
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: mysql
@@ -27,7 +27,7 @@ services:
     user: "1000"
     working_dir: /usr/src/myapp
     ports:
-      - 9999:8080
+      - 9797:8080
     volumes:
       - ./:/usr/src/myapp
     environment:
