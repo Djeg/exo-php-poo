@@ -25,67 +25,49 @@ require __DIR__ . '/../vendor/autoload.php';
  *      et ça retourne l'article avec l'identifiant spécifié en paramètre
  *    - Utiliser cette class App\Table\ArticleTable dans vos différentes
  *      pages
+ * 
+ * 5. Exercice - Créer une page "nouvel-article.php". Cette page
+ *    affiche un formulaire avec la possibilité de rentrer le titre,
+ *    la description et le contenue d'un article.
+ *    Lors de l'envoie du formulaire (avec la méthode POST), il faut
+ *    enregistrer les données dans la table article.
+ * 
+ * 6. Exercice - Ajouter une méthode "insertOne" dans la class
+ *    App\Table\ArticleTable qui prend en paramètre le titre,
+ *    la description et le contenue d'un article et qui l'enregistre
+ *    dans la base de données.
+ *    Utiliser la méthode "insertOne" de la class ArticleTable
+ *    dans "nouvel-article.php"
+ *    
+ * 7. Créer une class App\Table\Table qui prend en paramètre de son
+ *    constructeur une instance PDO et le nom d'une table de la base
+ *    de données.
+ *    - Ajouter (copier/coller/adapter) les méthodes "fetchMany" et
+ *      "fetchOne" dans la class Table.
+ *    - Faire hériter la class ArticleTable de la class Table.
  */
+
+use App\Table\ArticleTable;
 
 // Création d'une instance de PDO (connection à la base de données)
 $connection = new PDO('mysql:host=localhost;port=3306;dbname=blog', 'root', '');
-// $connection: PDO
-// Préparation d'une requête SQL
-$requete = $connection->query('SELECT * FROM articles LIMIT 25');
-// $requete: PDOStatement|false
-// éxécute la requête SQL et on récupére les résultat
-$articles = $requete->fetchAll();
-// $articles: array
+$table = new ArticleTable($connection);
 ?>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css" />
-    <title>Mon Blog - Accueil</title>
-</head>
+<?php
+$title = 'Accueil';
+$pageTitle = 'Mon Blog';
+$description = 'Bienvenue sur mon blog';
 
-<body>
-    <header>
-        <div class="blur"></div>
-        <nav>
-            <a href="#accueil">
-                <p>Accueil</p>
-            </a>
-            <a href="#contact">
-                <p>Contact</p>
-            </a>
-            <a href="#a-propos">
-                <p>A Propos de moi</p>
-            </a>
-            <a href="#se-connecter">
-                <p>Se connecter</p>
-            </a>
-        </nav>
-        <h1>Mon Blog</h1>
-        <p>Bienvenue sur mon blog</p>
-    </header>
+include __DIR__ . '/../templates/start.php';
+?>;
 
-    <main>
-        <div class="content">
-            <?php foreach ($articles as $index => $article) : ?>
-                <a href="/article.php?id=<?= $article['id'] ?>" class="article-vignette">
-                    <h2><?= $article['title']; ?></h2>
-                    <p class="description"><?= $article['description']; ?></p>
-                    <p class="date"><?= $article['createdAt']; ?></p>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </main>
+<?php foreach ($table->fetchMany() as $index => $article) : ?>
+    <a href="/article.php?id=<?= $article['id'] ?>" class="article-vignette">
+        <h2><?= $article['title']; ?></h2>
+        <p class="description"><?= $article['description']; ?></p>
+        <p class="date"><?= $article['createdAt']; ?></p>
+    </a>
+<?php endforeach; ?>
 
-    <footer>
-        <p>Mon Blog - 2022</p>
-    </footer>
-</body>
-
-</html>
+<?php include __DIR__ . '/../templates/end.php'; ?>;
