@@ -27,24 +27,65 @@ require __DIR__ . '/../vendor/autoload.php';
  *      pages
  */
 
-// Création d'un objet PDO. Il recoit en paramètre
-// une chaine de caractère avec vos informations de connexion
-// à mysql:
-// host: correspond à l'adresse de la machine contenant mysql (généralement localhost / 127.0.0.1)
-// port: correspond au port du server mysql (3306)
-// dbname: correspond au nom de votre base de données
-// UN second paramètre qui correspond au nom d'utilisateur de mysql (genéralement "root")
-// Une troisième paramètre qui correspond au mot de passe (genéralement "root" ou bien "")
-$pdo = new PDO('mysql:host=localhost;port=3306;dbname=blog', 'root', '');
-$table = new App\Table\ArticleTable($pdo);
-// On prépare une requète SQL. Cette méthode "query" prend en paramètre
-// une chaine de caratère avec votre requête SQL et elle retourne
-// un "PDOStatement" (Une requête PDO)
-$articles = $table->fetchMany(25);
-$article = $table->fetchOne(1234);
-// $article = $statement->fetch() Récupére un seul article !
+// Création d'une instance de PDO (connection à la base de données)
+$connection = new PDO('mysql:host=localhost;port=3306;dbname=blog', 'root', '');
+// $connection: PDO
+// Préparation d'une requête SQL
+$requete = $connection->query('SELECT * FROM articles LIMIT 25');
+// $requete: PDOStatement|false
+// éxécute la requête SQL et on récupére les résultat
+$articles = $requete->fetchAll();
+// $articles: array
+?>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css" />
+    <title>Mon Blog - Accueil</title>
+</head>
 
-// $menu = 'coucou';
-// 
-// echo $menu === 'accueil' ? '<p>Accueil</p>' : '<p>Pas accueil</p>';
+<body>
+    <header>
+        <div class="blur"></div>
+        <nav>
+            <a href="#accueil">
+                <p>Accueil</p>
+            </a>
+            <a href="#contact">
+                <p>Contact</p>
+            </a>
+            <a href="#a-propos">
+                <p>A Propos de moi</p>
+            </a>
+            <a href="#se-connecter">
+                <p>Se connecter</p>
+            </a>
+        </nav>
+        <h1>Mon Blog</h1>
+        <p>Bienvenue sur mon blog</p>
+    </header>
+
+    <main>
+        <div class="content">
+            <?php foreach ($articles as $index => $article) : ?>
+                <a href="/article.php?id=<?= $article['id'] ?>" class="article-vignette">
+                    <h2><?= $article['title']; ?></h2>
+                    <p class="description"><?= $article['description']; ?></p>
+                    <p class="date"><?= $article['createdAt']; ?></p>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </main>
+
+    <footer>
+        <p>Mon Blog - 2022</p>
+    </footer>
+</body>
+
+</html>
