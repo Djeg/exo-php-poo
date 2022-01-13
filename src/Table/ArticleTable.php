@@ -4,26 +4,18 @@ namespace App\Table;
 
 use PDO;
 
-class ArticleTable
+/**
+ * Représente la table des articles dans le base de données.
+ */
+class ArticleTable extends Table
 {
-    protected PDO $connection;
-
     public function __construct(PDO $connection)
     {
-        $this->connection = $connection;
+        parent::__construct($connection, 'articles');
     }
 
-    public function fetchMany(int $limit = 25): array
+    public function insertOne(string $title, string $description, string $content): void
     {
-        $requete = $this->connection->query("SELECT * FROM articles LIMIT $limit");
-
-        return $requete->fetchAll();
-    }
-
-    public function fetchOne(int $id): array
-    {
-        $requete = $this->connection->query("SELECT * FROM articles WHERE id = $id");
-
-        return $requete->fetch();
+        $this->connection->exec("INSERT INTO articles (title, description, content) VALUES ('$title', '$description', '$content')");
     }
 }

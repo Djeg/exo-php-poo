@@ -2,22 +2,6 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-function hello(string $template, array $parametres = []): string
-{
-    // On demande à ob de démarrer
-    ob_start();
-
-    extract($parametres);
-    include __DIR__ . '/../templates/' . $template . '.php';
-
-    // on vas demander à ob de nous retourner tout
-    // ce qui a était "echo"
-    $html = ob_end_flush();
-
-    return $html;
-}
-
-
 /**
  * 1. Exercice - Créer une page "index.php" qui affiche les 25 derniers
  *    articles en HTML. Vous pouvez rajouter du css, du javascript
@@ -61,13 +45,9 @@ function hello(string $template, array $parametres = []): string
  *    - Ajouter (copier/coller/adapter) les méthodes "fetchMany" et
  *      "fetchOne" dans la class Table.
  *    - Faire hériter la class ArticleTable de la class Table.
- */
-
-/**
- * MVC :
- *  - Model (Celui qui s'occupe de la base de données)
- *  - Vue (Celui qui s'occupe du HTML)
- *  - Controller (Celui qui contient la logique pour connécter le model et la vue)
+ * 
+ * 8. Ajouter un bouton "modifier" sur la page d'un article qui redirige
+ *    vers le formulaire de modification d'un article.
  */
 
 use App\Table\ArticleTable;
@@ -76,32 +56,11 @@ use App\Table\ArticleTable;
 $connection = new PDO('mysql:host=localhost;port=3306;dbname=blog', 'root', '');
 $table = new ArticleTable($connection);
 
-/**
- * Créer une classe Template qui accépte en paramètre de constructeur
- * le chemin vers le répertoire avec tout les templates
- */
-$template = new Template(__DIR__ . '/../templates');
-
+$title = 'Accueil';
+$pageTitle = 'Accueil';
+$description = 'Bienvenue sur mon blog';
+include __DIR__ . '/../templates/start.php';
 ?>
-
-<?php
-/**
- * Ajouter à la class template une méthode "render" qui accépte
- * le nom (ou chemin) du template à afficher ainsi que les variables
- * de ce template.
- * 
- * Qu'est-ce que dois faire render ?
- * 1. Il démarre ob "ob_start()"
- * 2. Il extrait les variables du tableaux de paramètre (extract)
- * 3. Il inclue le template spécifier en paramètre (avec include)
- * 4. Il retourne le html avec ob_end_flush()
- */
-$html = $template->render('start', [
-    'title' => 'Accueil',
-    'pageTitle' => 'Mon Blog',
-    'description' => 'Bienvenue sur mon blog',
-])
-?>;
 
 <?php foreach ($table->fetchMany() as $index => $article) : ?>
     <a href="/article.php?id=<?= $article['id'] ?>" class="article-vignette">
