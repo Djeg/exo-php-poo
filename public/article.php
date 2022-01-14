@@ -20,6 +20,8 @@ $description = $article['description'];
 include __DIR__ . '/../templates/start.php';
 ?>
 
+<a href="/modifierArticle.php?id=<?= $id ?>">Modifier</a>
+<a href="/supprimerArticle.php?id=<?= $id ?>">Supprimer</a>
 <?= $article['content'] ?>
 
 <?php include __DIR__ . '/../templates/end.php'; ?>;
