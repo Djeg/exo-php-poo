@@ -48,6 +48,13 @@ require __DIR__ . '/../vendor/autoload.php';
  * 
  * 8. Ajouter un bouton "modifier" sur la page d'un article qui redirige
  *    vers le formulaire de modification d'un article.
+ * 
+ * 9. Ajouter un bouton "supprimer" sur la page d'un article qui supprime
+ *    l'article de la base de données
+ * 
+ * 10. Ajouter un formulaire de connexion (nom d'utilisateur / mot de passe).
+ *     Vous pouvez utiliser les sessions pour sauvegarder l'utilisateur
+ *     connécté.
  */
 
 use App\Table\ArticleTable;
